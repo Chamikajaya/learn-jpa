@@ -23,6 +23,10 @@ public class Student {
     private Integer age;
 
 
+    @OneToOne(mappedBy = "student")  // form the bi-directional relationship - so that when we load the student, we can also load the student id card.
+    private StudentIdCard studentIdCard;
+
+
 
 
 
