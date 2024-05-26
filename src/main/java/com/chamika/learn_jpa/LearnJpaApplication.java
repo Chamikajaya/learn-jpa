@@ -22,13 +22,13 @@ public class LearnJpaApplication {
 
 
     @Bean
-    CommandLineRunner runner(StudentRepository studentRepository) {
+    CommandLineRunner runner(StudentRepository studentRepository, StudentIdCardRepository studentIdCardRepository) {
         return args -> {
 
-            Faker faker = new Faker();
-            Random random = new Random();
-
-//            for (int i = 0; i < 50; i++) {
+//            Faker faker = new Faker();
+//            Random random = new Random();
+//
+//            for (int i = 0; i < 60; i++) {
 //                var name = faker.name();
 //                String firstName = name.firstName();
 //                String lastName = name.lastName();
@@ -39,48 +39,12 @@ public class LearnJpaApplication {
 //                Student student = new Student(firstName, lastName, email, age);
 //
 //                studentRepository.save(student);
-//            }
+//            Student student = new Student("Chamika", "Jayasinghe", "chamika@gmail.com", 22);
+//            StudentIdCard studentIdCard = new StudentIdCard("123456", student);
+//
+//            studentIdCardRepository.save(studentIdCard);  // ! This will save the student and the student id card as well.
 
-            /*
-            studentRepository.
-                    findAll(Sort.by("age").ascending().and(Sort.by("firstName").descending())).  // first sort by age in ascending order, then sort by first name in descending order
-                    forEach(s -> System.out.println(s.getFirstName() + " " + s.getAge()));
-            */
-
-            // * PAGINATION
-
-            /*
-            PageRequest pageRequest =  PageRequest.of(0, 10, Sort.by("age").ascending());
-            Page<Student> studentPage = studentRepository.findAll(pageRequest);
-
-            System.out.println(studentPage);
-
-             */
-
-            int pageNumber = 0;
-            int pageSize = 10;
-
-            while (true) {
-
-                PageRequest pageRequest = PageRequest.of(pageNumber, pageSize,
-                        Sort.by("age").ascending().and(Sort.by("firstName").ascending()));
-
-                Page<Student> studentPage = studentRepository.findAll(pageRequest);
-
-                if (studentPage.isEmpty()) {
-                    break;
-                }
-
-                System.out.println("Page number: " + pageNumber);
-                studentPage.forEach(s -> System.out.println(s.getFirstName() + " " + s.getAge()));
-
-                pageNumber++;
-
-                System.out.println();
-            }
-
-
-
+            studentIdCardRepository.findById(1).ifPresent(System.out::println);
 
 
         };
