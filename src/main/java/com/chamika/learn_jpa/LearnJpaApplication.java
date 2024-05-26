@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
 import java.util.Random;
 
 @SpringBootApplication
@@ -32,7 +33,17 @@ public class LearnJpaApplication {
 
             Student student = new Student(firstName, lastName, email, age);
 
+//         studentRepository.save(new Student("Chamika", "Jayasinghe", "chamika@gmail.com", 22));
+
             studentRepository.save(student);
+
+//            String message = studentRepository.existsByEmail("chamika@gmail.com") ? "Student exists" : "Student does not exist";
+
+            List<Student> students = studentRepository.findByAgeBetweenNativeSQL(40, 60).orElse(null);
+
+            System.out.println(students);
+
+
 
 
         };
