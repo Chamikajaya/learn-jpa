@@ -16,7 +16,8 @@ public class Student {
     private String firstName;
     @Column(nullable = false)
     private String lastName;
-    @Column(nullable = false)  // there is no need to specify unique constraint here because it is already specified in the table annotation above 😊
+    @Column(nullable = false)
+    // there is no need to specify unique constraint here because it is already specified in the table annotation above 😊
     private String email;
     @Column(nullable = false)
     private Integer age;
@@ -25,8 +26,7 @@ public class Student {
     public Student() {
     }
 
-    public Student(Integer id, String firstName, String lastName, String email, Integer age) {
-        this.id = id;
+    public Student(String firstName, String lastName, String email, Integer age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
