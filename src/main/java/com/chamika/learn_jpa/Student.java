@@ -22,8 +22,8 @@ public class Student {
     @Column(nullable = false)
     private Integer age;
 
-
-    @OneToOne(mappedBy = "student")  // form the bi-directional relationship - so that when we load the student, we can also load the student id card.
+    // form the bi-directional relationship - so that when we load the student, we can also load the student id card.
+    @OneToOne(mappedBy = "student", orphanRemoval = true)  // 👉 what orphanRemoval does is that if we delete the student, the student id card will also be deleted.
     private StudentIdCard studentIdCard;
 
 

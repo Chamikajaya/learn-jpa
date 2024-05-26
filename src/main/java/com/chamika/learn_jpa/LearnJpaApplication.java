@@ -47,10 +47,11 @@ public class LearnJpaApplication {
 
 
             // Since we have a bi-directional relationship between the student and the student id card, if we load the student, we can also load the student id card and vice versa. 👈
-            studentIdCardRepository.findById(1).ifPresent(System.out::println);
-            System.out.println("---------------------------------------------------");
-            studentRepository.findById(61).ifPresent(System.out::println);
+//            studentIdCardRepository.findById(1).ifPresent(System.out::println);
+//            System.out.println("---------------------------------------------------");
+//            studentRepository.findById(61).ifPresent(System.out::println);
 
+            studentRepository.deleteStudentById(61);
 
         };
     }
