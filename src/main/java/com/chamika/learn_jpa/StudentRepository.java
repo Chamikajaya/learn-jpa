@@ -20,4 +20,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
         // The @Transactional annotation is used to indicate that this method should be run within a transaction. A database transaction is a sequence of actions that are treated as a single unit of work. These actions should either complete entirely or not at all. The @Transactional annotation in Spring provides a way to define the scope of a single database transaction.
     void deleteStudentById(Integer id);
 
+
+
 }

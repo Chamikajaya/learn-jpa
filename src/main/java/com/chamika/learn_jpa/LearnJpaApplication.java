@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Random;
@@ -33,11 +34,14 @@ public class LearnJpaApplication {
 
             Student student = new Student(firstName, lastName, email, age);
 
-
             studentRepository.save(student);
 
 
             studentRepository.deleteStudentById(6);
+
+            studentRepository.
+                    findAll(Sort.by("age").ascending().and(Sort.by("firstName").descending())).  // first sort by age in ascending order, then sort by first name in descending order
+                    forEach(s -> System.out.println(s.getFirstName() + " " + s.getAge()));
 
 
         };
