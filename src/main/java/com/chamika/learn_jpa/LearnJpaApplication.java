@@ -61,13 +61,15 @@ public class LearnJpaApplication {
             s1.addBook(b3);
             s2.addBook(b4);
 
-            /*
-             * When you save the Student instances using studentRepository.saveAll(), Spring Data JPA automatically cascades the persist operation to associated entities, including StudentIdCard and Book instances.
 
-             * Due to the cascade = CascadeType.ALL annotation on the @OneToMany relationship in the Student entity, any changes made to the Student entity, such as adding or removing books, trigger corresponding operations on the associated Book instances.
+            Course c1 = new Course("Java Course", "CSE");
+            Course c2 = new Course("Python Course", "CSE");
+            Course c3 = new Course("Fluid Mechanics", "Civil Eng.");
+            Course c4 = new Course("Thermodynamics", "Chemical Eng");
 
-             * Therefore, even though you are not explicitly saving StudentIdCard and Book instances, they are saved to the database alongside the Student entity because of the cascading effect. This eliminates the need to separately handle saving StudentIdCard and Book entities through their respective repositories.
-             */
+            s1.setCourses(List.of(c1,c2));
+            s2.setCourses(List.of(c3, c4));
+
 
             studentRepository.saveAll(List.of(s1, s2));
 

@@ -37,6 +37,19 @@ public class Student {
     private List<Book> bookList = new ArrayList<>();
 
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    //*  For many to many we have to use a bridge table This will create the bridge table with 2 columns where student_id references id in t_student and course_id references id in t_course ==>
+
+    @JoinTable(
+            name = "t_student_course",
+            joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id")
+
+    )
+    private List<Course> courses = new ArrayList<>();
+
+
     public Student() {
     }
 
@@ -87,20 +100,6 @@ public class Student {
         this.age = age;
     }
 
-    public void addBook(Book book) {
-        if (!bookList.contains(book)) {
-            bookList.add(book);
-            book.setStudent(this);
-        }
-    }
-
-    public void removeBook(Book book) {
-        if (bookList.contains(book)) {
-            bookList.remove(book);
-            book.setStudent(null);
-        }
-    }
-
     public List<Book> getBookList() {
         return bookList;
     }
@@ -116,6 +115,40 @@ public class Student {
     public void setStudentIdCard(StudentIdCard studentIdCard) {
         this.studentIdCard = studentIdCard;
     }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public void addBook(Book book) {
+        if (!bookList.contains(book)) {
+            bookList.add(book);
+            book.setStudent(this);
+        }
+    }
+
+    public void removeBook(Book book) {
+        if (bookList.contains(book)) {
+            bookList.remove(book);
+            book.setStudent(null);
+        }
+    }
+
+
+    public void studentEnrolsToCourse(Course course) {
+        courses.add(course);  // add the course to this particular student's courses list
+        course.getStudentList().add(this);  // add the student to the course's student list
+    }
+
+    public void studentUnrollsFromCourse(Course course) {
+        courses.remove(course);  // remove the course from this particular student's courses list
+        course.getStudentList().remove(this);  // remove this particular student from course's student list
+    }
+
 
     @Override
     public String toString() {
