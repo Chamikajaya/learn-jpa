@@ -2,6 +2,9 @@ package com.chamika.learn_jpa;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "t_student", uniqueConstraints = {@UniqueConstraint(name = "email_unique", columnNames = "email")})
 public class Student {
@@ -10,6 +13,7 @@ public class Student {
     @SequenceGenerator(name = "student_id_seq", sequenceName = "student_id_seq", allocationSize = 1)
     // This annotation is used to define a sequence generator that will be used to generate unique values for the primary key.
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
+    @Column(updatable = false)
     private Integer id;
 
     @Column(nullable = false)
@@ -23,11 +27,14 @@ public class Student {
     private Integer age;
 
     // form the bi-directional relationship - so that when we load the student, we can also load the student id card.
-    @OneToOne(mappedBy = "student", orphanRemoval = true)  // 👉 what orphanRemoval does is that if we delete the student, the student id card will also be deleted.
+    @OneToOne(mappedBy = "student", orphanRemoval = true, cascade = CascadeType.ALL)
+    // 👉 what orphanRemoval does is that if we delete the student, the student id card will also be deleted.
     private StudentIdCard studentIdCard;
 
 
-
+    @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = CascadeType.ALL)
+    // Since cascade = CascadeType.ALL --> This means that any operation performed on a Student entity (such as saving, updating, or deleting) will also be applied to its associated Book entities.
+    private List<Book> bookList = new ArrayList<>();
 
 
     public Student() {
@@ -80,14 +87,22 @@ public class Student {
         this.age = age;
     }
 
+    public void addBook(Book book) {
+        if (!bookList.contains(book)) {
+            bookList.add(book);
+            book.setStudent(this);
+        }
+    }
+
+    public void removeBook(Book book) {
+        if (bookList.contains(book)) {
+            bookList.remove(book);
+            book.setStudent(null);
+        }
+    }
+
     @Override
     public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                '}';
+        return "Student{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", email='" + email + '\'' + ", age=" + age + '}';
     }
 }
