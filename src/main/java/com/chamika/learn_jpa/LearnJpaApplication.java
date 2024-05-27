@@ -23,7 +23,7 @@ public class LearnJpaApplication {
 
 
     @Bean
-    CommandLineRunner runner(StudentIdCardRepository studentIdCardRepository) {
+    CommandLineRunner runner(StudentRepository studentRepository) {
         return args -> {
 
 //            Faker faker = new Faker();
@@ -45,31 +45,31 @@ public class LearnJpaApplication {
 
             Student s1 = new Student("Chamika", "Jayasinghe", "chamika@gmail.com", 22);
             StudentIdCard i1 = new StudentIdCard("210247B", s1);
+            s1.setStudentIdCard(i1);
 
             Student s2 = new Student("Mike", "Dane", "mike@gmail.com", 22);
             StudentIdCard i2 = new StudentIdCard("210690B", s2);
+            s2.setStudentIdCard(i2);
 
             Book b1 = new Book("Atomic Habits", LocalDateTime.now());
             Book b2 = new Book("Deep Work", LocalDateTime.now().minusYears(2));
             Book b3 = new Book("Steal like an Artist", LocalDateTime.now().minusDays(10));
             Book b4 = new Book("Harry Potter", LocalDateTime.now().minusDays(10));
 
-//        s1.addBook(b1);
-//        s1.addBook(b2);
-//        s1.addBook(b3);
-//        s2.addBook(b4);
+            s1.addBook(b1);
+            s1.addBook(b2);
+            s1.addBook(b3);
+            s2.addBook(b4);
 
             /*
+             * When you save the Student instances using studentRepository.saveAll(), Spring Data JPA automatically cascades the persist operation to associated entities, including StudentIdCard and Book instances.
 
-            * When you save the StudentIdCard instance, Spring Data JPA cascades the persist operation to the associated Student instance (s1). Due to the cascade = CascadeType.ALL annotation on the @OneToMany relationship, the Book instances associated with the Student instance are also persisted (saved) to the database.
+             * Due to the cascade = CascadeType.ALL annotation on the @OneToMany relationship in the Student entity, any changes made to the Student entity, such as adding or removing books, trigger corresponding operations on the associated Book instances.
 
-            * In other words, even though you are not explicitly saving the Student and Book instances, they are saved automatically because of the cascading effect when you save the StudentIdCard instance. (So no need for StudentRepo or BookRepo 🥹)
-
-
+             * Therefore, even though you are not explicitly saving StudentIdCard and Book instances, they are saved to the database alongside the Student entity because of the cascading effect. This eliminates the need to separately handle saving StudentIdCard and Book entities through their respective repositories.
              */
 
-//        studentIdCardRepository.save(i1);
-//        studentIdCardRepository.save(i2);
+            studentRepository.saveAll(List.of(s1, s2));
 
 
         };

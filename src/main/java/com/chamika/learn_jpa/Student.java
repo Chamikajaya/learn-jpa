@@ -32,7 +32,7 @@ public class Student {
     private StudentIdCard studentIdCard;
 
 
-    @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     // Since cascade = CascadeType.ALL --> This means that any operation performed on a Student entity (such as saving, updating, or deleting) will also be applied to its associated Book entities.
     private List<Book> bookList = new ArrayList<>();
 
@@ -99,6 +99,22 @@ public class Student {
             bookList.remove(book);
             book.setStudent(null);
         }
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
+    }
+
+    public StudentIdCard getStudentIdCard() {
+        return studentIdCard;
+    }
+
+    public void setStudentIdCard(StudentIdCard studentIdCard) {
+        this.studentIdCard = studentIdCard;
     }
 
     @Override
